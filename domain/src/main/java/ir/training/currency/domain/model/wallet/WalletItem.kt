@@ -7,7 +7,15 @@ data class WalletItem(private var currencyList: MutableList<WalletCurrency>) {
     }
 
     fun addCurrency(currency: WalletCurrency) {
-        currencyList.add(currency)
+        if (currencyList.contains(currency)) {
+            currencyList.forEach {
+                if (it.name == currency.name) {
+                    it.amount += currency.amount
+                }
+            }
+        } else {
+            currencyList.add(currency)
+        }
     }
 
 }
