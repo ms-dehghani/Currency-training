@@ -14,6 +14,9 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField("String", "BASE_URL", "\"https://developers.paysera.com/\"")
+
     }
 
     buildTypes {
@@ -32,25 +35,6 @@ android {
 
     kotlinOptions {
         jvmTarget = "11"
-    }
-
-    flavorDimensions.add("type")
-    productFlavors {
-        create("api") {
-            namespace = "ir.training.currency.data"
-            dimension = "type"
-
-            buildConfigField ("String", "BASE_URL", "\"https://gateway.marvel.com:443/\"")
-
-            buildConfigField("boolean", "IS_MOCKED", false.toString())
-        }
-
-        create("mock") {
-            namespace = "ir.training.currency.data"
-            dimension = "type"
-
-            buildConfigField("boolean", "IS_MOCKED", true.toString())
-        }
     }
 
     buildFeatures {
