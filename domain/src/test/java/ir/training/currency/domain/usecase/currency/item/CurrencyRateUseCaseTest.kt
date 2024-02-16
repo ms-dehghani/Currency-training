@@ -26,7 +26,7 @@ class CurrencyRateUseCaseTest {
             coEvery { mockRepository.getUpdatedRates() } returns listOf(expectedCurrencyRateItem)
 
             val item = getCurrencyRateUseCase.invoke()
-            assertEquals(expectedCurrencyRateItem, item)
+            assertEquals(listOf(expectedCurrencyRateItem), item)
         }
 
     @Test

@@ -44,8 +44,6 @@ dependencies {
     implementation(libs.kotlin.coroutines)
     testImplementation(libs.test.coroutines)
 
-    implementation(libs.paging)
-
     testImplementation(libs.test.mockk)
 
     implementation(libs.test.junit)

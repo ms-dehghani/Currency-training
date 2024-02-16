@@ -54,18 +54,8 @@ dependencies {
 
     implementation(libs.retrofit.gson)
     implementation(libs.retrofit)
-
-    implementation(libs.room.runtime)
-    implementation(libs.room.paging)
-    implementation(libs.room.common)
-
-    kapt(libs.room.compiler)
-
+    
     implementation(libs.kotlin.coroutines)
-
-    implementation(libs.compose.activity)
-
-    implementation(libs.paging)
 
     implementation(libs.hilt)
     kapt(libs.hilt.compiler)
@@ -76,14 +66,5 @@ dependencies {
     testImplementation(libs.test.coroutines)
 
     testImplementation(libs.test.turbine)
-
-    androidTestImplementation(libs.test.mockk.android)
-    androidTestImplementation(libs.test.espresso)
-    androidTestImplementation(libs.test.coroutines)
-    androidTestImplementation(libs.test.junit)
-    androidTestImplementation(libs.test.core.ktx)
-    androidTestImplementation(libs.test.junit.ktx)
-    androidTestImplementation(libs.test.room)
-
 
 }
