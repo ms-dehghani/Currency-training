@@ -22,6 +22,7 @@ class CurrencyExchangeUseCaseTest {
             val expectedItem = ExchangeItem(
                 response = "response",
                 walletItem = WalletItem(mutableListOf(WalletCurrency("USD", 1.0))),
+                logList = emptyList()
             )
 
             coEvery {
