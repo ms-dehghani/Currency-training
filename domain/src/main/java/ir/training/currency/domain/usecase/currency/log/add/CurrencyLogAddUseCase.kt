@@ -1,6 +1,6 @@
 package ir.training.currency.domain.usecase.currency.log.add
 
-import ir.training.currency.domain.model.CurrencyLogItem
+import ir.training.currency.domain.model.currency.log.CurrencyLogItem
 import ir.training.currency.domain.repository.currency.log.CurrencyLogRepository
 
 class CurrencyLogAddUseCase(private val repository: CurrencyLogRepository) {

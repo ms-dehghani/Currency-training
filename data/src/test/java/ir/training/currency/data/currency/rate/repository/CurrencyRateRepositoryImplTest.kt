@@ -3,7 +3,7 @@ package ir.training.currency.data.currency.rate.repository
 import io.mockk.coEvery
 import io.mockk.mockk
 import ir.training.currency.data.currency.rate.dataprovider.CurrencyRateDataProvider
-import ir.training.currency.domain.model.CurrencyRateItem
+import ir.training.currency.domain.model.currency.rate.CurrencyRateItem
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test

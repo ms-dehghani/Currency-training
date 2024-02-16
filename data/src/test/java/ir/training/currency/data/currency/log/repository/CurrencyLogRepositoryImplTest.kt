@@ -3,8 +3,8 @@ package ir.training.currency.data.currency.log.repository
 import io.mockk.coEvery
 import io.mockk.mockk
 import ir.training.currency.data.currency.log.dataprovider.CurrencyLogDataProvider
-import ir.training.currency.domain.model.CurrencyLogItem
-import ir.training.currency.domain.model.CurrencyLogType
+import ir.training.currency.domain.model.currency.log.CurrencyLogItem
+import ir.training.currency.domain.model.currency.log.CurrencyLogType
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse

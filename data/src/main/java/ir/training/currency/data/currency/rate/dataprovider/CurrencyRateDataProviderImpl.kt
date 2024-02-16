@@ -1,7 +1,7 @@
 package ir.training.currency.data.currency.rate.dataprovider
 
 import ir.training.currency.data.ServiceRepository
-import ir.training.currency.domain.model.CurrencyRateItem
+import ir.training.currency.domain.model.currency.rate.CurrencyRateItem
 import javax.inject.Inject
 
 

@@ -1,6 +1,6 @@
 package ir.training.currency.domain.repository.currency.log
 
-import ir.training.currency.domain.model.CurrencyLogItem
+import ir.training.currency.domain.model.currency.log.CurrencyLogItem
 
 interface CurrencyLogRepository {
     suspend fun getCurrencyLogList(): List<CurrencyLogItem>

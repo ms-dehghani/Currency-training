@@ -1,7 +1,7 @@
 package ir.training.currency.data.service.dto.api.currency
 
 import ir.training.currency.data.service.dto.api.currency.rate.CurrencyRateResponse
-import ir.training.currency.domain.model.CurrencyRateItem
+import ir.training.currency.domain.model.currency.rate.CurrencyRateItem
 
 class CurrencyRateResponseAdapterToCurrencyRate {
 

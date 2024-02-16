@@ -1,7 +1,7 @@
 package ir.training.currency.data.currency.log.dataprovider
 
 import ir.training.currency.data.ServiceRepository
-import ir.training.currency.domain.model.CurrencyLogItem
+import ir.training.currency.domain.model.currency.log.CurrencyLogItem
 import javax.inject.Inject
 
 

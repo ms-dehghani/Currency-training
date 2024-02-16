@@ -8,7 +8,7 @@ import ir.training.currency.data.ServiceRepository
 import ir.training.currency.data.currency.rate.dataprovider.CurrencyRateDataProvider
 import ir.training.currency.data.currency.rate.dataprovider.CurrencyRateDataProviderImpl
 import ir.training.currency.data.currency.rate.repository.CurrencyRateRepositoryImpl
-import ir.training.currency.domain.repository.currency.item.CurrencyRateRepository
+import ir.training.currency.domain.repository.currency.item.rate.CurrencyRateRepository
 
 @Module
 @InstallIn(SingletonComponent::class)

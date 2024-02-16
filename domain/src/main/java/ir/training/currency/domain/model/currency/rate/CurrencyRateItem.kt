@@ -1,4 +1,4 @@
-package ir.training.currency.domain.model
+package ir.training.currency.domain.model.currency.rate
 
 data class CurrencyRateItem(
     val base: String,

@@ -1,7 +1,7 @@
 package ir.training.currency.data
 
-import ir.training.currency.domain.model.CurrencyLogItem
-import ir.training.currency.domain.model.CurrencyRateItem
+import ir.training.currency.domain.model.currency.log.CurrencyLogItem
+import ir.training.currency.domain.model.currency.rate.CurrencyRateItem
 
 interface ServiceRepository {
 

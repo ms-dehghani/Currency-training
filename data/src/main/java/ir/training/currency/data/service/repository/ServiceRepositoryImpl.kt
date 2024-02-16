@@ -3,8 +3,8 @@ package ir.training.currency.data.service.repository
 import ir.training.currency.data.ServiceRepository
 import ir.training.currency.data.service.dto.api.currency.CurrencyRateResponseAdapterToCurrencyRate
 import ir.training.currency.data.service.repository.api.ApiService
-import ir.training.currency.domain.model.CurrencyLogItem
-import ir.training.currency.domain.model.CurrencyRateItem
+import ir.training.currency.domain.model.currency.log.CurrencyLogItem
+import ir.training.currency.domain.model.currency.rate.CurrencyRateItem
 import javax.inject.Inject
 
 class ServiceRepositoryImpl @Inject constructor(val api: ApiService) :

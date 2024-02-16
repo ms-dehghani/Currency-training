@@ -1,9 +1,9 @@
-package ir.training.currency.domain.usecase.currency.item
+package ir.training.currency.domain.usecase.currency.item.rate
 
 import io.mockk.coEvery
 import io.mockk.mockk
-import ir.training.currency.domain.model.CurrencyRateItem
-import ir.training.currency.domain.repository.currency.item.CurrencyRateRepository
+import ir.training.currency.domain.model.currency.rate.CurrencyRateItem
+import ir.training.currency.domain.repository.currency.item.rate.CurrencyRateRepository
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test

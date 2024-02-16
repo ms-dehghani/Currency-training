@@ -2,8 +2,8 @@ package ir.training.currency.domain.usecase.currency.log.add
 
 import io.mockk.coEvery
 import io.mockk.mockk
-import ir.training.currency.domain.model.CurrencyLogItem
-import ir.training.currency.domain.model.CurrencyLogType
+import ir.training.currency.domain.model.currency.log.CurrencyLogItem
+import ir.training.currency.domain.model.currency.log.CurrencyLogType
 import ir.training.currency.domain.repository.currency.log.CurrencyLogRepository
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertFalse
