@@ -12,29 +12,29 @@ class CurrencyRateUseCaseTest {
 
     private val mockRepository = mockk<CurrencyRateRepository>()
 
-    private val getCurrencyRateUseCase = CurrencyRateUseCase(mockRepository)
+    private val useCase = CurrencyRateUseCase(mockRepository)
 
     @Test
-    fun givenCurrencyRateIdWhenGetCurrencyRateUseCaseInvokedThenExpectedCurrencyRateReturned() =
+    fun whenGetCurrencyRateUseCaseInvokedThenExpectedListReturned() =
         runBlocking {
-            val expectedCurrencyRateItem = CurrencyRateItem(
+            val expectedItem = CurrencyRateItem(
                 rates = mapOf(),
                 base = "base",
                 date = "date",
             )
 
-            coEvery { mockRepository.getUpdatedRates() } returns listOf(expectedCurrencyRateItem)
+            coEvery { mockRepository.getUpdatedRates() } returns listOf(expectedItem)
 
-            val item = getCurrencyRateUseCase.invoke()
-            assertEquals(listOf(expectedCurrencyRateItem), item)
+            val item = useCase.invoke()
+            assertEquals(listOf(expectedItem), item)
         }
 
     @Test
-    fun givenCurrencyRateIdWhenGetCurrencyRateUseCaseInvokedAndCurrencyRateIsNotFoundThenEmptyCurrencyRateReturned() =
+    fun whenGetCurrencyRateUseCaseInvokedThenEmptyListReturned() =
         runBlocking {
             coEvery { mockRepository.getUpdatedRates() } returns listOf()
 
-            val item = getCurrencyRateUseCase.invoke()
+            val item = useCase.invoke()
             assertEquals(0, item.size)
         }
 }
