@@ -20,7 +20,7 @@ import ir.training.currency.domain.repository.currency.log.CurrencyLogRepository
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal class CurrencyRateDIModule {
+internal class CurrencyDIModule {
 
     @Provides
     fun provideCurrencyRateDataProvider(repo: ServiceRepository): CurrencyRateDataProvider {

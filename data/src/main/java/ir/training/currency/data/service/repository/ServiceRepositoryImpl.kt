@@ -16,6 +16,9 @@ class ServiceRepositoryImpl @Inject constructor(val api: ApiService) :
 
     private var currencyLogList = ArrayList<CurrencyLogItem>()
     private var wallet = WalletItem(mutableListOf(WalletCurrency("EUR", 1000.0)))
+    override suspend fun getWallet(): WalletItem {
+        return wallet
+    }
 
     override suspend fun getUpdatedRates(): List<CurrencyRateItem> {
         val apiItem =

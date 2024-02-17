@@ -3,9 +3,11 @@ package ir.training.currency.data
 import ir.training.currency.domain.model.currency.log.CurrencyLogItem
 import ir.training.currency.domain.model.currency.rate.CurrencyRateItem
 import ir.training.currency.domain.model.exchange.ExchangeItem
+import ir.training.currency.domain.model.wallet.WalletItem
 
 interface ServiceRepository {
 
+    suspend fun getWallet(): WalletItem
     suspend fun getUpdatedRates(): List<CurrencyRateItem>
 
     suspend fun getCurrencyLogList(): List<CurrencyLogItem>
