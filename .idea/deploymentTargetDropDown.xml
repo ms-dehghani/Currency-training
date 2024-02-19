@@ -2,6 +2,9 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="ExchangeDialogTest">
+        <State />
+      </entry>
       <entry key="ExchangeLogItemTest">
         <State />
       </entry>
@@ -9,6 +12,12 @@
         <State />
       </entry>
       <entry key="app">
+        <State />
+      </entry>
+      <entry key="givenData_WhenViewCreate_ThenShouldFindAmount()">
+        <State />
+      </entry>
+      <entry key="givenData_WhenViewCreate_ThenShouldFindButton()">
         <State />
       </entry>
     </value>
