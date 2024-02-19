@@ -89,12 +89,3 @@ fun WalletCard(
         }
     }
 }
-
-
-@Preview
-@Composable
-fun WalletCardPreview() {
-    WalletCard(
-        "$100 EUR \n$100 USD"
-    )
-}
