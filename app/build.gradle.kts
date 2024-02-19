@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -67,10 +68,38 @@ dependencies {
     implementation(project(mapOf("path" to ":domain")))
     implementation(project(mapOf("path" to ":data")))
 
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation(platform(libs.kotlin.bom))
+
+    implementation(libs.compose.ui)
+    implementation(libs.compose.activity)
+    implementation(libs.material3)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.ui.graphics)
+
+    implementation(libs.lifecycle)
+
+    implementation(libs.hilt)
+    implementation(libs.hilt.compose)
+    kapt(libs.hilt.compiler)
+
+    debugImplementation(libs.compose.ui.tooling)
+    debugImplementation(libs.compose.ui.test.manifest)
+
+    implementation(libs.test.junit)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.test.espresso)
+    androidTestImplementation(libs.test.junit)
+    androidTestImplementation(libs.compose.ui.test)
+
+    androidTestImplementation(libs.test.mockk.android)
+
+    testImplementation(libs.test.coroutines)
+    testImplementation(libs.test.mockk)
+    testImplementation(libs.test.turbine)
+
+}
+
+kapt {
+    correctErrorTypes = true
 }

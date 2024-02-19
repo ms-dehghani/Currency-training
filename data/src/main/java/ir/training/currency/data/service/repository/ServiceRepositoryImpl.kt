@@ -9,6 +9,7 @@ import ir.training.currency.domain.model.currency.rate.CurrencyRateItem
 import ir.training.currency.domain.model.exchange.ExchangeItem
 import ir.training.currency.domain.model.wallet.WalletCurrency
 import ir.training.currency.domain.model.wallet.WalletItem
+import java.math.RoundingMode
 import javax.inject.Inject
 
 class ServiceRepositoryImpl @Inject constructor(val api: ApiService) :
@@ -46,16 +47,16 @@ class ServiceRepositoryImpl @Inject constructor(val api: ApiService) :
         currencyList: List<CurrencyRateItem>
     ): ExchangeItem {
 
-        val commission = if (currencyList.size > 10) 0.07 else 0.0
+        val commission = if (currencyLogList.size > 2) 0.007 else 0.0
 
         val fromCurrency = currencyList.find { it.base == from }
         fromCurrency?.let {
             fromCurrency.rates[to]?.let {
-                val newCurrencyAmount = amount * it
-                val currencyExchangeCommission = amount * commission
+                val newCurrencyAmount = roundNumber(amount * it, 2)
+                val currencyExchangeCommission = roundNumber(amount * commission, 2)
 
                 wallet.addCurrency(WalletCurrency(to, newCurrencyAmount))
-                wallet.addCurrency(WalletCurrency(from, -(amount + currencyExchangeCommission)))
+                wallet.addCurrency(WalletCurrency(from, -roundNumber((amount + currencyExchangeCommission),2)))
 
                 addLog(
                     CurrencyLogItem(
@@ -82,14 +83,28 @@ class ServiceRepositoryImpl @Inject constructor(val api: ApiService) :
                 )
 
                 return ExchangeItem(
-                    response = "",
+                    response = "You have converted $amount $from to $newCurrencyAmount ${to}."
+                            + if (currencyExchangeCommission > 0.0) " Commission Fee - $currencyExchangeCommission ${from}." else "",
                     walletItem = wallet,
                     logList = getCurrencyLogList()
                 )
             }
-            return ExchangeItem(response = "", walletItem = wallet, logList = getCurrencyLogList())
+            return ExchangeItem(
+                response = "Operation Failed.",
+                walletItem = wallet,
+                logList = getCurrencyLogList()
+            )
         }
-        return ExchangeItem(response = "", walletItem = wallet, logList = getCurrencyLogList())
+        return ExchangeItem(
+            response = "Operation Failed.",
+            walletItem = wallet,
+            logList = getCurrencyLogList()
+        )
+    }
+
+
+    private fun roundNumber(number: Double, places: Int): Double {
+        return number.toBigDecimal().setScale(places, RoundingMode.UP).toDouble()
     }
 }
 

@@ -18,6 +18,18 @@ data class WalletItem(private var currencyList: MutableList<WalletCurrency>) {
         }
     }
 
+    fun toStringValue():String{
+        var result = "";
+         currencyList.forEach {
+             result+= "$ ${it.amount} ${it.name}" + "\n"
+         }
+        return result;
+    }
+
+    fun getEuroAmount():String{
+        return "$ ${currencyList[0].amount} ${currencyList[0].name}"
+    }
+
     private fun contains(currency: WalletCurrency): Boolean {
         return currencyList.find { it.name == currency.name } != null
     }
