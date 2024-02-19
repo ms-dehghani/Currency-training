@@ -1,5 +1,5 @@
 
-# Android Marvel Comics App
+# Android Currency Exchange App
 In this application we will be using the Marvel API to fetch the comics and display them in a list.
 The user can click on a comic to see more details about it.
 we will be using the following API:
