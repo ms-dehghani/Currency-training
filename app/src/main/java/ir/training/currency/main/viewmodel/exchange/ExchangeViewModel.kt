@@ -49,7 +49,7 @@ class ExchangeViewModel @Inject constructor(
                 currencyRateList = currencyRateUseCase.invoke()
                 _state.update {
                     it.copy(
-                        availableCurrencies = currencyRateList[0].rates.keys.toList(),
+                        availableCurrencies = if (currencyRateList.isEmpty()) listOf() else currencyRateList[0].rates.keys.toList(),
                     )
                 }
                 delay(5_000)
@@ -78,7 +78,7 @@ class ExchangeViewModel @Inject constructor(
         when (event) {
             is ExchangePageEvent.ExchangeCurrency -> {
                 exchangeCurrency(
-                    from = _state.value.exchangeResponse!!.walletItem.getCurrencyList()[0].name,
+                    from = if (currencyRateList.isEmpty()) "EUR" else currencyRateList[0].base,
                     to = event.to,
                     amount = event.amount
                 )
