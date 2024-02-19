@@ -1,7 +1,7 @@
 
 # Android Currency Exchange App
-In this application we will be using the Marvel API to fetch the comics and display them in a list.
-The user can click on a comic to see more details about it.
+In this application we will be using the Currency API to fetch the currency list and exchange rate and display them in a list.
+The user can click on a exchange button and exchange the wallet deposit.
 we will be using the following API:
 * https://developers.paysera.com
 
