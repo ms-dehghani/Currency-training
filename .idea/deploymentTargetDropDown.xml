@@ -2,7 +2,10 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="All Tests">
+      <entry key="ExchangeLogItemTest">
+        <State />
+      </entry>
+      <entry key="WalletCardTest">
         <State />
       </entry>
       <entry key="app">

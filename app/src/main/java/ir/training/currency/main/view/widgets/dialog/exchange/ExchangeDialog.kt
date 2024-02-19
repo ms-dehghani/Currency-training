@@ -117,7 +117,7 @@ fun ExchangeDialog(
                             ),
                             prefix = { Text(text = "$ ", fontWeight = FontWeight.Bold) },
                             textStyle = TextStyle(fontWeight = FontWeight.Bold),
-                            label = { Text(text = stringResource(id = R.string.exchange)) }
+                            label = { Text(text = stringResource(id = R.string.amount_to_exchange)) }
                         )
                         Text(
                             modifier = Modifier

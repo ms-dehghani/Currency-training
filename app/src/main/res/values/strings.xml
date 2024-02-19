@@ -4,6 +4,7 @@
     <string name="no_item_found">No item found!</string>
 
     <string name="balance">Current Balance</string>
+    <string name="amount_to_exchange">Amount to exchange</string>
     <string name="exchange">Exchange</string>
     <string name="convert_to">Convert to: </string>
     <string name="available">available</string>
