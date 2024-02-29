@@ -12,7 +12,7 @@ import ir.training.currency.main.state.ExchangePageState
 import ir.training.currency.main.state.base.PageState
 import ir.training.currency.main.view.pages.exchange.contract.ExchangePageEffect
 import ir.training.currency.main.view.pages.exchange.contract.ExchangePageEvent
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,6 +25,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ExchangeViewModel @Inject constructor(
+    private val dispatcher: CoroutineDispatcher,
     private val walletUseCase: WalletUseCase,
     private val currencyExchangeUseCase: CurrencyExchangeUseCase,
     private val currencyRateUseCase: CurrencyRateUseCase,
@@ -39,12 +40,12 @@ class ExchangeViewModel @Inject constructor(
     val effectFlow = _effectFlow.asSharedFlow()
 
     init {
-        getInitialState()
-        getCurrencyRate()
+        getInitialState(dispatcher)
+        getCurrencyRate(dispatcher)
     }
 
-    private fun getCurrencyRate() {
-        viewModelScope.launch(Dispatchers.IO) {
+    private fun getCurrencyRate(dispatcher: CoroutineDispatcher) {
+        viewModelScope.launch(dispatcher) {
             while (true) {
                 currencyRateList = currencyRateUseCase.invoke()
                 _state.update {
@@ -57,8 +58,8 @@ class ExchangeViewModel @Inject constructor(
         }
     }
 
-    private fun getInitialState() {
-        viewModelScope.launch(Dispatchers.IO) {
+    private fun getInitialState(dispatcher: CoroutineDispatcher) {
+        viewModelScope.launch(dispatcher) {
             val wallet = walletUseCase.invoke()
             _state.update {
                 it.copy(
@@ -78,6 +79,7 @@ class ExchangeViewModel @Inject constructor(
         when (event) {
             is ExchangePageEvent.ExchangeCurrency -> {
                 exchangeCurrency(
+                    dispatcher = dispatcher,
                     from = if (currencyRateList.isEmpty()) "EUR" else currencyRateList[0].base,
                     to = event.to,
                     amount = event.amount
@@ -86,8 +88,13 @@ class ExchangeViewModel @Inject constructor(
         }
     }
 
-    private fun exchangeCurrency(from: String, to: String, amount: Double) {
-        viewModelScope.launch(Dispatchers.IO) {
+    private fun exchangeCurrency(
+        dispatcher: CoroutineDispatcher,
+        from: String,
+        to: String,
+        amount: Double
+    ) {
+        viewModelScope.launch(dispatcher) {
             _state.update {
                 it.copy(
                     pageState = PageState.LOADING

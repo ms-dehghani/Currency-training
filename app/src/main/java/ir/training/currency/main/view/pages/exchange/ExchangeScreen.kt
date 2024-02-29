@@ -16,11 +16,13 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import ir.training.currency.R
+import ir.training.currency.main.di.DIApp
 import ir.training.currency.main.state.base.PageState
 import ir.training.currency.main.view.pages.exchange.contract.ExchangePageEffect
 import ir.training.currency.main.view.pages.exchange.contract.ExchangePageEvent
 import ir.training.currency.main.view.widgets.dialog.alert.AlertDialog
 import ir.training.currency.main.viewmodel.exchange.ExchangeViewModel
+import kotlinx.coroutines.Dispatchers
 
 @Composable
 fun ExchangeScreen() {
