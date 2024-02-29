@@ -11,7 +11,7 @@ import ir.training.currency.domain.usecase.wallet.WalletUseCase
 import ir.training.currency.main.state.base.PageState
 import ir.training.currency.main.view.pages.exchange.contract.ExchangePageEffect
 import ir.training.currency.main.view.pages.exchange.contract.ExchangePageEvent
-import ir.training.currency.main.viewmodel.exchange.ExchangeViewModel
+import ir.training.currency.main.viewmodel.exchange.WalletScreenViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.resetMain
@@ -31,7 +31,7 @@ import org.junit.Test
  */
 class ExchangeViewModelTest {
 
-    private lateinit var viewModel: ExchangeViewModel
+    private lateinit var viewModel: WalletScreenViewModel
     private var walletUseCase = mockk<WalletUseCase>()
     private var currencyRateUseCase = mockk<CurrencyRateUseCase>()
     private var currencyExchangeUseCase = mockk<CurrencyExchangeUseCase>()
@@ -54,7 +54,7 @@ class ExchangeViewModelTest {
             WalletItem(mutableListOf())
         }
 
-        viewModel = ExchangeViewModel(
+        viewModel = WalletScreenViewModel(
             walletUseCase = walletUseCase,
             currencyExchangeUseCase = currencyExchangeUseCase,
             currencyRateUseCase = currencyRateUseCase

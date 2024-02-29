@@ -1,4 +1,4 @@
-package ir.training.currency.main.view.pages.exchange
+package ir.training.currency.main.view.pages.wallet
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,27 +16,27 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import ir.training.currency.R
-import ir.training.currency.main.di.DIApp
 import ir.training.currency.main.state.base.PageState
-import ir.training.currency.main.view.pages.exchange.contract.ExchangePageEffect
-import ir.training.currency.main.view.pages.exchange.contract.ExchangePageEvent
+import ir.training.currency.main.view.pages.wallet.contract.WalletPageEffect
+import ir.training.currency.main.view.pages.wallet.contract.WalletPageEvent
+
 import ir.training.currency.main.view.widgets.dialog.alert.AlertDialog
-import ir.training.currency.main.viewmodel.exchange.ExchangeViewModel
-import kotlinx.coroutines.Dispatchers
+import ir.training.currency.main.viewmodel.wallet.WalletScreenViewModel
 
 @Composable
-fun ExchangeScreen() {
-    val viewModel: ExchangeViewModel = hiltViewModel()
+fun WalletScreen() {
+    val viewModel: WalletScreenViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
 
-    val showExchangeAlertDialog = remember { mutableStateOf(false) }
+    val exchangeAlertDialogText = remember { mutableStateOf("") }
+
     when {
-        showExchangeAlertDialog.value -> {
+        exchangeAlertDialogText.value.isNotEmpty() -> {
             AlertDialog(
                 stringResource(id = R.string.exchange_currency),
-                state.exchangeResponse!!.response,
+                exchangeAlertDialogText.value,
                 onDismissRequest = {
-                    showExchangeAlertDialog.value = false
+                    exchangeAlertDialogText.value = ""
                 })
         }
     }
@@ -44,15 +44,15 @@ fun ExchangeScreen() {
     LaunchedEffect(viewModel) {
         viewModel.effectFlow.collect { effect ->
             when (effect) {
-                is ExchangePageEffect.OnExchangeResponseReceived -> {
-                    showExchangeAlertDialog.value = true
+                is WalletPageEffect.OnExchangeResponseReceived -> {
+                    exchangeAlertDialogText.value = effect.message
                 }
             }
         }
     }
 
 
-    if (state.pageState == PageState.LOADING && state.exchangeResponse == null) {
+    if (state.pageState == PageState.LOADING && state.wallet == null) {
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = androidx.compose.ui.Alignment.Center
@@ -66,8 +66,8 @@ fun ExchangeScreen() {
             )
         }
     } else {
-        ExchangeContent(state = state, onExchangeCurrency = { to, amount ->
-            viewModel.onEvent(ExchangePageEvent.ExchangeCurrency(to, amount))
+        WalletContent(state = state, onExchangeCurrencyResponse = { message ->
+            viewModel.onEvent(WalletPageEvent.ExchangeCurrencyResponse(message))
         })
     }
 }

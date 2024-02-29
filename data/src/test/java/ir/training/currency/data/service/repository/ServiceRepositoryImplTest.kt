@@ -18,9 +18,9 @@ import org.junit.Test
 
 class ServiceRepositoryImplTest {
 
-    lateinit var mockRepository: ServiceRepositoryImpl
-    lateinit var repository: ServiceRepositoryImpl
-    lateinit var apiService: ApiService
+    private lateinit var mockRepository: ServiceRepositoryImpl
+    private lateinit var repository: ServiceRepositoryImpl
+    private lateinit var apiService: ApiService
 
     @Before
     fun setUp() {
@@ -30,7 +30,7 @@ class ServiceRepositoryImplTest {
     }
 
     @Test
-    fun testGetWallet() = runBlocking {
+    fun whenGetWalletInvoke_thenReturnExpectedWallet() = runBlocking {
         // Arrange
         val expectedWallet = WalletItem(
             currencyList = mutableListOf(
@@ -51,7 +51,7 @@ class ServiceRepositoryImplTest {
     }
 
     @Test
-    fun testGetUpdatedRates() = runBlocking {
+    fun whenGetUpdatedRatesInvoke_thenReturnExpectedResult() = runBlocking {
         // Arrange
         val expectedRates = listOf(CurrencyRateItem(base = "USD", date = "date", rates = mapOf()))
 
@@ -71,7 +71,7 @@ class ServiceRepositoryImplTest {
     }
 
     @Test
-    fun testConvertCurrency() = runBlocking {
+    fun givenEnoughCurrency_whenConvertCurrency_thenReturnSuccess() = runBlocking {
         // Arrange
         val from = "EUR"
         val to = "USD"
@@ -79,7 +79,7 @@ class ServiceRepositoryImplTest {
         val currencyList =
             listOf(CurrencyRateItem(base = from, date = "", rates = mapOf(to to 1.2)))
         val expectedExchangeItem = ExchangeItem(
-            response = "",
+            response = "You have converted 100.0 EUR to 120.0 USD.",
             walletItem = WalletItem(
                 mutableListOf(
                     WalletCurrency(from, 900.0),
@@ -90,6 +90,30 @@ class ServiceRepositoryImplTest {
                 CurrencyLogItem(type = CurrencyLogType.SELL, currencyName = "EUR", amount = 100.0),
                 CurrencyLogItem(type = CurrencyLogType.BUY, currencyName = "USD", amount = 120.0)
             )
+        )
+
+        val resultRates = repository.convertCurrency(from, to, amount, currencyList)
+
+        // Assert
+        assertEquals(expectedExchangeItem, resultRates)
+    }
+
+    @Test
+    fun givenNotEnoughCurrency_whenConvertCurrency_thenReturnFailed() = runBlocking {
+        // Arrange
+        val from = "EUR"
+        val to = "USD"
+        val amount = 10000.0
+        val currencyList =
+            listOf(CurrencyRateItem(base = from, date = "", rates = mapOf(to to 1.2)))
+        val expectedExchangeItem = ExchangeItem(
+            response = "You don't have enough ${from}.",
+            walletItem = WalletItem(
+                mutableListOf(
+                    WalletCurrency(from, 1000.0),
+                )
+            ),
+            logList = emptyList()
         )
 
         val resultRates = repository.convertCurrency(from, to, amount, currencyList)

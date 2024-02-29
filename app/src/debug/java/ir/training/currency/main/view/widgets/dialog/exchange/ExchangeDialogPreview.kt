@@ -7,11 +7,11 @@ import androidx.compose.ui.tooling.preview.Preview
 @Preview
 @Composable
 fun ExchangeDialogPreview() {
-    ExchangeDialog("1000", listOf("USD"), {}, onExchangeCurrency = { s: String, d: Double -> })
+    ExchangeDialog("1000", {}, onExchangeCurrencyResponse = { s: String -> })
 }
 
 @Preview
 @Composable
 fun ExchangeDialogWithoutCurrencyListPreview() {
-    ExchangeDialog("1000", listOf(""), {}, onExchangeCurrency = { s: String, d: Double -> })
+    ExchangeDialog("1000", {}, onExchangeCurrencyResponse = { s: String -> })
 }

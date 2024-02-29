@@ -1,4 +1,4 @@
-package ir.training.currency.main.view.pages.exchange
+package ir.training.currency.main.view.pages.wallet
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -20,28 +20,27 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import ir.training.currency.R
-import ir.training.currency.main.state.ExchangePageState
+import ir.training.currency.main.state.WalletPageState
 import ir.training.currency.main.view.widgets.dialog.exchange.ExchangeDialog
 import ir.training.currency.main.view.widgets.items.log.ExchangeLogListItem
 import ir.training.currency.main.view.widgets.items.wallet.WalletCard
 
 @Composable
-fun ExchangeContent(
-    state: ExchangePageState,
+fun WalletContent(
+    state: WalletPageState,
     modifier: Modifier = Modifier,
-    onExchangeCurrency: (to: String, amount: Double) -> Unit,
+    onExchangeCurrencyResponse: (message: String) -> Unit,
 ) {
 
     val showExchangeDialog = remember { mutableStateOf(false) }
     when {
         showExchangeDialog.value -> {
             ExchangeDialog(
-                state.exchangeResponse!!.walletItem.getEuroAmount(),
-                state.availableCurrencies,
+                state.wallet!!.getEuroAmount(),
                 onDismissRequest = {
                     showExchangeDialog.value = false
                 },
-                onExchangeCurrency
+                onExchangeCurrencyResponse
             )
         }
     }
@@ -54,16 +53,15 @@ fun ExchangeContent(
         contentAlignment = Alignment.Center
     ) {
         Column {
-            WalletCard(balance = state.exchangeResponse!!.walletItem.toStringValue())
+            WalletCard(balance = state.wallet!!.toStringValue())
             Box(
                 Modifier
                     .weight(1f)
             ) {
                 LazyColumn {
-                    items(state.exchangeResponse.logList.size) {
-                        ExchangeLogListItem(logItem = state.exchangeResponse.logList.get(it))
+                    items(state.logList.size) {
+                        ExchangeLogListItem(logItem = state.logList[it])
                         Divider(color = Color.LightGray)
-
                     }
                 }
             }

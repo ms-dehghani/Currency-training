@@ -27,6 +27,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,24 +43,49 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.hilt.navigation.compose.hiltViewModel
 import ir.training.currency.R
+import ir.training.currency.main.view.pages.exchange.contract.ExchangePageEffect
+import ir.training.currency.main.view.pages.exchange.contract.ExchangePageEvent
+import ir.training.currency.main.viewmodel.exchange.ExchangeScreenViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExchangeDialog(
     availableAmount: String,
-    availableCurrencies: List<String>,
     onDismissRequest: () -> Unit,
-    onExchangeCurrency: (to: String, amount: Double) -> Unit
+    onExchangeCurrencyResponse: (message: String) -> Unit
 ) {
 
+    val viewModel: ExchangeScreenViewModel = hiltViewModel()
+    val state by viewModel.state.collectAsState()
+
     var exchangeAmount by remember { mutableStateOf("10") }
-    var selectedCurrency by remember { mutableStateOf(if(availableCurrencies.isNotEmpty()) availableCurrencies[0] else "") }
+    var selectedCurrency by remember { mutableStateOf("") }
     var dropDownMenuState by remember { mutableStateOf(false) }
 
+
+    val availableCurrencies = if (state.availableCurrencies != null) {
+        state.availableCurrencies!!.collectAsState(initial = emptyList()).value
+    } else {
+        emptyList()
+    }
+
+    if (selectedCurrency.isEmpty() && availableCurrencies.isNotEmpty()) {
+        selectedCurrency = availableCurrencies[0]
+    }
+
+    LaunchedEffect(viewModel) {
+        viewModel.effectFlow.collect { effect ->
+            when (effect) {
+                is ExchangePageEffect.OnExchangeResponseReceived -> {
+                    onExchangeCurrencyResponse.invoke(effect.message)
+                }
+            }
+        }
+    }
 
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
@@ -172,7 +199,13 @@ fun ExchangeDialog(
                                 .weight(1f)
                         )
                         Button(onClick = {
-                            onExchangeCurrency.invoke(selectedCurrency, exchangeAmount.toDouble())
+                            viewModel.onEvent(
+                                ExchangePageEvent.ExchangeCurrency(
+                                    "EUR",
+                                    selectedCurrency,
+                                    exchangeAmount.toDouble()
+                                )
+                            )
                             onDismissRequest()
                         }) {
                             Text(text = stringResource(id = R.string.exchange))
