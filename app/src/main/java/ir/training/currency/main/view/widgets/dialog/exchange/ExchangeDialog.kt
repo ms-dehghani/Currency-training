@@ -1,10 +1,8 @@
 package ir.training.currency.main.view.widgets.dialog.exchange
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -52,7 +50,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import ir.training.currency.R
-import ir.training.currency.main.theme.WhiteText
 import ir.training.currency.main.view.pages.exchange.contract.ExchangePageEffect
 import ir.training.currency.main.view.pages.exchange.contract.ExchangePageEvent
 import ir.training.currency.main.viewmodel.exchange.ExchangeScreenViewModel

@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.training.currency.domain.model.currency.rate.CurrencyRateItem
-import ir.training.currency.domain.model.exchange.ExchangeItem
 import ir.training.currency.domain.usecase.currency.item.exchange.CurrencyExchangeUseCase
 import ir.training.currency.domain.usecase.currency.item.exchange.CurrencyFakeExchangeUseCase
 import ir.training.currency.domain.usecase.currency.item.rate.CurrencyRateUseCase
@@ -13,6 +12,7 @@ import ir.training.currency.main.state.base.PageState
 import ir.training.currency.main.view.pages.exchange.contract.ExchangePageEffect
 import ir.training.currency.main.view.pages.exchange.contract.ExchangePageEvent
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -81,6 +81,7 @@ class ExchangeScreenViewModel @Inject constructor(
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun exchangeCurrency(
         dispatcher: CoroutineDispatcher,
         from: String,
@@ -116,6 +117,7 @@ class ExchangeScreenViewModel @Inject constructor(
     }
 
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun exchangeFakeCurrency(
         dispatcher: CoroutineDispatcher,
         from: String,

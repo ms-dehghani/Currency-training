@@ -2,9 +2,7 @@ package ir.training.currency.domain.usecase.currency.item.exchange
 
 import io.mockk.coEvery
 import io.mockk.mockk
-import ir.training.currency.domain.model.exchange.ExchangeItem
-import ir.training.currency.domain.model.wallet.WalletCurrency
-import ir.training.currency.domain.model.wallet.WalletItem
+import ir.training.currency.domain.model.exchange.FakeExchangeItem
 import ir.training.currency.domain.repository.currency.item.exchange.CurrencyExchangeRepository
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -19,10 +17,9 @@ class CurrencyFakeExchangeUseCaseTest {
     @Test
     fun givenExchangeDataWhenConvertFakeCurrencyInvokedThenExpectedItemReturned() =
         runBlocking {
-            val expectedItem = ExchangeItem(
+            val expectedItem = FakeExchangeItem(
+                amount = "1.0",
                 response = "response",
-                walletItem = WalletItem(mutableListOf(WalletCurrency("USD", 1.0))),
-                logList = emptyList()
             )
 
             coEvery {
