@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.training.currency.domain.model.currency.rate.CurrencyRateItem
+import ir.training.currency.domain.model.exchange.ExchangeItem
 import ir.training.currency.domain.usecase.currency.item.exchange.CurrencyExchangeUseCase
+import ir.training.currency.domain.usecase.currency.item.exchange.CurrencyFakeExchangeUseCase
 import ir.training.currency.domain.usecase.currency.item.rate.CurrencyRateUseCase
 import ir.training.currency.main.state.ExchangePageState
 import ir.training.currency.main.state.base.PageState
@@ -26,6 +28,7 @@ import javax.inject.Inject
 class ExchangeScreenViewModel @Inject constructor(
     private val dispatcher: CoroutineDispatcher,
     private val currencyExchangeUseCase: CurrencyExchangeUseCase,
+    private val currencyFakeExchangeUseCase: CurrencyFakeExchangeUseCase,
     private val currencyRateUseCase: CurrencyRateUseCase,
 ) : ViewModel() {
 
@@ -66,6 +69,15 @@ class ExchangeScreenViewModel @Inject constructor(
                     amount = event.amount
                 )
             }
+
+            is ExchangePageEvent.CurrencyExchangeResult -> {
+                exchangeFakeCurrency(
+                    dispatcher = dispatcher,
+                    from = event.from,
+                    to = event.to,
+                    amount = event.amount
+                )
+            }
         }
     }
 
@@ -97,6 +109,42 @@ class ExchangeScreenViewModel @Inject constructor(
             _effectFlow.tryEmit(
                 ExchangePageEffect.OnExchangeResponseReceived(
                     message = exchangeItem.response
+                )
+            )
+            _effectFlow.resetReplayCache()
+        }
+    }
+
+
+    private fun exchangeFakeCurrency(
+        dispatcher: CoroutineDispatcher,
+        from: String,
+        to: String,
+        amount: Double
+    ) {
+        viewModelScope.launch(dispatcher) {
+            _state.update {
+                it.copy(
+                    pageState = PageState.LOADING
+                )
+            }
+
+            val exchangeItem = currencyFakeExchangeUseCase.invoke(
+                from = from,
+                to = to,
+                amount = amount,
+                currencyList = currencyRateList
+            )
+
+            _state.update {
+                it.copy(
+                    pageState = PageState.IDLE,
+                )
+            }
+
+            _effectFlow.tryEmit(
+                ExchangePageEffect.OnFakeExchangeResponseReceived(
+                    amount = exchangeItem.amount
                 )
             )
             _effectFlow.resetReplayCache()

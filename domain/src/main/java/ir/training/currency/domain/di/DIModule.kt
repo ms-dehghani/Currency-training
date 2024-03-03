@@ -9,6 +9,7 @@ import ir.training.currency.domain.repository.currency.item.rate.CurrencyRateRep
 import ir.training.currency.domain.repository.currency.log.CurrencyLogRepository
 import ir.training.currency.domain.repository.wallet.WalletRepository
 import ir.training.currency.domain.usecase.currency.item.exchange.CurrencyExchangeUseCase
+import ir.training.currency.domain.usecase.currency.item.exchange.CurrencyFakeExchangeUseCase
 import ir.training.currency.domain.usecase.currency.item.rate.CurrencyRateUseCase
 import ir.training.currency.domain.usecase.currency.log.add.CurrencyLogAddUseCase
 import ir.training.currency.domain.usecase.currency.log.list.CurrencyLogListUseCase
@@ -25,6 +26,11 @@ class DIModule {
     @Provides
     fun provideCurrencyExchangeUseCase(repository: CurrencyExchangeRepository): CurrencyExchangeUseCase {
         return CurrencyExchangeUseCase(repository)
+    }
+
+    @Provides
+    fun provideCurrencyFakeExchangeUseCase(repository: CurrencyExchangeRepository): CurrencyFakeExchangeUseCase {
+        return CurrencyFakeExchangeUseCase(repository)
     }
 
 

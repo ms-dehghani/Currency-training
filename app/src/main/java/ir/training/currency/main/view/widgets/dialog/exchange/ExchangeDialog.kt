@@ -1,7 +1,9 @@
 package ir.training.currency.main.view.widgets.dialog.exchange
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -43,10 +45,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import ir.training.currency.R
+import ir.training.currency.main.theme.WhiteText
 import ir.training.currency.main.view.pages.exchange.contract.ExchangePageEffect
 import ir.training.currency.main.view.pages.exchange.contract.ExchangePageEvent
 import ir.training.currency.main.viewmodel.exchange.ExchangeScreenViewModel
@@ -62,7 +68,8 @@ fun ExchangeDialog(
     val viewModel: ExchangeScreenViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
 
-    var exchangeAmount by remember { mutableStateOf("10") }
+    var exchangeAmount by remember { mutableStateOf("0") }
+    var getCurrencyAmount by remember { mutableStateOf("0") }
     var selectedCurrency by remember { mutableStateOf("") }
     var dropDownMenuState by remember { mutableStateOf(false) }
 
@@ -82,6 +89,10 @@ fun ExchangeDialog(
             when (effect) {
                 is ExchangePageEffect.OnExchangeResponseReceived -> {
                     onExchangeCurrencyResponse.invoke(effect.message)
+                }
+
+                is ExchangePageEffect.OnFakeExchangeResponseReceived -> {
+                    getCurrencyAmount = effect.amount
                 }
             }
         }
@@ -119,18 +130,29 @@ fun ExchangeDialog(
                 Column(
                     Modifier
                         .weight(1f)
+                        .padding(dimensionResource(id = R.dimen.padding_medium))
                         .fillMaxHeight()
                 ) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .weight(1f)
+                            .weight(3f),
+                        Arrangement.Center
                     ) {
                         TextField(
                             modifier = Modifier
                                 .fillMaxWidth(),
                             value = exchangeAmount,
-                            onValueChange = { exchangeAmount = it },
+                            onValueChange = {
+                                exchangeAmount = it
+                                viewModel.onEvent(
+                                    ExchangePageEvent.CurrencyExchangeResult(
+                                        "EUR",
+                                        selectedCurrency,
+                                        if (exchangeAmount.isEmpty()) 0.0 else exchangeAmount.toDouble()
+                                    )
+                                )
+                            },
                             singleLine = true,
                             colors = TextFieldDefaults.textFieldColors(
                                 focusedIndicatorColor = colorResource(id = R.color.transparent),
@@ -162,15 +184,35 @@ fun ExchangeDialog(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .weight(1f), verticalAlignment = Alignment.CenterVertically
+                            .weight(2f),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
                     ) {
                         Text(
                             modifier = Modifier
                                 .padding(horizontal = dimensionResource(id = R.dimen.padding_small)),
-                            text = stringResource(id = R.string.convert_to)
+                            fontWeight = FontWeight.Normal,
+                            fontSize = dimensionResource(id = R.dimen.font_size_normal).value.sp,
+                            maxLines = 1,
+                            textAlign = TextAlign.Start,
+                            overflow = TextOverflow.Ellipsis,
+                            text = if (getCurrencyAmount != "-") String.format(
+                                stringResource(id = R.string.get_currency),
+                                getCurrencyAmount
+                            ) else "-"
                         )
 
-                        Text(selectedCurrency)
+                        Text(
+                            modifier = Modifier
+                                .padding(horizontal = dimensionResource(id = R.dimen.padding_small)),
+                            fontWeight = FontWeight.Normal,
+                            fontSize = dimensionResource(id = R.dimen.font_size_normal).value.sp,
+                            maxLines = 1,
+                            textAlign = TextAlign.Start,
+                            overflow = TextOverflow.Ellipsis,
+                            text = selectedCurrency
+                        )
+
                         IconButton(onClick = { dropDownMenuState = !dropDownMenuState }) {
                             Icon(
                                 imageVector = Icons.Default.ArrowDropDown,
@@ -187,6 +229,11 @@ fun ExchangeDialog(
                                     onClick = {
                                         dropDownMenuState = false
                                         selectedCurrency = it
+                                        ExchangePageEvent.ExchangeCurrency(
+                                            "EUR",
+                                            selectedCurrency,
+                                            exchangeAmount.toDouble()
+                                        )
                                     }
                                 )
                                 Divider(
@@ -194,11 +241,13 @@ fun ExchangeDialog(
                                 )
                             }
                         }
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                        )
-                        Button(onClick = {
+
+                    }
+
+                    Button(modifier = Modifier
+                        .align(Alignment.End),
+                        onClick = {
+                        if (exchangeAmount.isNotEmpty())
                             viewModel.onEvent(
                                 ExchangePageEvent.ExchangeCurrency(
                                     "EUR",
@@ -206,14 +255,9 @@ fun ExchangeDialog(
                                     exchangeAmount.toDouble()
                                 )
                             )
-                            onDismissRequest()
-                        }) {
-                            Text(text = stringResource(id = R.string.exchange))
-                        }
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                        )
+                        onDismissRequest()
+                    }) {
+                        Text(text = stringResource(id = R.string.exchange))
                     }
 
                 }

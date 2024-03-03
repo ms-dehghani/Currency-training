@@ -14,9 +14,8 @@ dependencyResolutionManagement {
 
     versionCatalogs {
         create("libs") {
-            version("compose", "1.5.4")
-            version("compose-activity", "1.8.0")
-            version("composeTetManifest", "1.6.0-alpha07")
+            version("compose", "1.6.2")
+            version("compose-activity", "1.8.2")
             version("hilt", "2.48")
             version("hilt-navigation-compose", "1.0.0")
             version("material3", "1.1.2")

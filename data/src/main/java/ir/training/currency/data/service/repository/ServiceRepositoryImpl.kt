@@ -7,6 +7,7 @@ import ir.training.currency.domain.model.currency.log.CurrencyLogItem
 import ir.training.currency.domain.model.currency.log.CurrencyLogType
 import ir.training.currency.domain.model.currency.rate.CurrencyRateItem
 import ir.training.currency.domain.model.exchange.ExchangeItem
+import ir.training.currency.domain.model.exchange.FakeExchangeItem
 import ir.training.currency.domain.model.wallet.WalletCurrency
 import ir.training.currency.domain.model.wallet.WalletItem
 import java.math.RoundingMode
@@ -55,9 +56,9 @@ class ServiceRepositoryImpl @Inject constructor(val api: ApiService) :
                 val newCurrencyAmount = roundNumber(amount * it, 2)
                 val currencyExchangeCommission = roundNumber(amount * commission, 2)
 
-                if((wallet.getCurrencyList().find { it.name == from }?.amount
+                if ((wallet.getCurrencyList().find { it.name == from }?.amount
                         ?: 0.0) < (amount + currencyExchangeCommission)
-                ){
+                ) {
                     return ExchangeItem(
                         response = "You don't have enough ${from}.",
                         walletItem = wallet,
@@ -66,7 +67,12 @@ class ServiceRepositoryImpl @Inject constructor(val api: ApiService) :
                 }
 
                 wallet.addCurrency(WalletCurrency(to, newCurrencyAmount))
-                wallet.addCurrency(WalletCurrency(from, -roundNumber((amount + currencyExchangeCommission),2)))
+                wallet.addCurrency(
+                    WalletCurrency(
+                        from,
+                        -roundNumber((amount + currencyExchangeCommission), 2)
+                    )
+                )
 
                 addLog(
                     CurrencyLogItem(
@@ -109,6 +115,46 @@ class ServiceRepositoryImpl @Inject constructor(val api: ApiService) :
             response = "Operation Failed.",
             walletItem = wallet,
             logList = getCurrencyLogList()
+        )
+    }
+
+    override suspend fun convertFakeCurrency(
+        from: String,
+        to: String,
+        amount: Double,
+        currencyList: List<CurrencyRateItem>
+    ): FakeExchangeItem {
+        val fromCurrency = currencyList.find { it.base == from }
+
+        val commission = if (currencyLogList.size > 2) 0.007 else 0.0
+
+        fromCurrency?.let {
+            fromCurrency.rates[to]?.let {
+                val newCurrencyAmount = roundNumber(amount * it, 2)
+                val currencyExchangeCommission = roundNumber(amount * commission, 2)
+
+                if ((wallet.getCurrencyList().find { it.name == from }?.amount
+                        ?: 0.0) < (amount + currencyExchangeCommission)
+                ) {
+                    return FakeExchangeItem(
+                        response = "Operation Failed.",
+                        amount = "-"
+                    )
+                }
+
+                return FakeExchangeItem(
+                    response = "Operation Success.",
+                    amount = "$newCurrencyAmount",
+                )
+            }
+            return FakeExchangeItem(
+                response = "Operation Failed.",
+                amount = "-",
+            )
+        }
+        return FakeExchangeItem(
+            response = "Operation Failed.",
+            amount = "-",
         )
     }
 

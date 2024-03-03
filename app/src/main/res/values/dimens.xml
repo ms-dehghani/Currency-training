@@ -13,7 +13,7 @@
     <dimen name="card_radios_medium">10dp</dimen>
     <dimen name="card_radios_small">5dp</dimen>
 
-    <dimen name="exchange_card_height">200dp</dimen>
+    <dimen name="exchange_card_height">270dp</dimen>
 
     <dimen name="exchange_icon_size">30dp</dimen>
     <dimen name="dot_icon_size">20dp</dimen>
